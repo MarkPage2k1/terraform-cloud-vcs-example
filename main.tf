@@ -13,11 +13,19 @@ data "aws_ami" "ami" {
   owners = ["099720109477"]
 }
 
-resource "aws_instance" "ansible_server" {
+resource "aws_instance" "server" {
   ami           = data.aws_ami.ami.id
-  instance_type = "t3.small"
+  instance_type = "t3.micro"
 
   lifecycle {
     create_before_destroy = true
   }
+
+  tags = {
+    Name = "Server"
+  }
+}
+
+output "public_ip" {
+  value = aws_instance.server.public_ip
 }
